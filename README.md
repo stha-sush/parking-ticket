@@ -1,2 +1,2 @@
 # parking-ticket
-Microservices based parking system that issues, manages, and closes parking tickets.
+Microservices based parking system that creates, manages, and closes parking tickets.
