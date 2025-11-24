@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.parkingticket.ticket_service.client.EnterDTO;
-import com.parkingticket.ticket_service.client.ExitDTO;
+import com.parkingticket.ticket_service.dto.EnterDTO;
+import com.parkingticket.ticket_service.dto.ExitDTO;
 import com.parkingticket.ticket_service.entity.Ticket;
 import com.parkingticket.ticket_service.service.TicketService;
 
@@ -27,7 +27,7 @@ public class TicketController {
 	}
 
 	@GetMapping("/{id:\\d+}")
-	public Ticket one(@PathVariable Long id) {
+	public Ticket one(@PathVariable String id) {
 		return service.findById(id);
 	}
 

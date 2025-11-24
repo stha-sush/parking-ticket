@@ -24,6 +24,11 @@ public class RateConfig {
 	// used when pricingModel = HOURLY
 	private Double perHour = 100.0;
 
+	// type-specific hourly rates
+	private Double bikePerHour; // for vehicleType = BIKE
+	private Double carPerHour; // for vehicleType = CAR
+	private Double truckPerHour; // for vehicleType = TRUCK
+
 	// optional grace period
 	private Integer graceMinutes = 0;
 

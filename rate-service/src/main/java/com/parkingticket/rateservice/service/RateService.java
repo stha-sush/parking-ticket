@@ -19,12 +19,17 @@ public class RateService {
 
 	public RateConfig current() {
 		// first record is current, create one if it doesn't exist
-		List<RateConfig> list = repo.findAll();
-		if (list.isEmpty()) {
+		List<RateConfig> all = repo.findAll();
+		if (all.isEmpty()) {
 			RateConfig def = new RateConfig();
+			def.setPricingModel("HOURLY");
+			def.setPerHour(100.0);
+			def.setGraceMinutes(0);
+			def.setRoundUpToHour(true);
+			def.setFlatAmount(0.0);
 			return repo.save(def);
 		}
-		return list.get(0);
+		return all.get(0);
 	}
 
 	public RateConfig update(RateConfig data) {
@@ -33,6 +38,12 @@ public class RateService {
 			cur.setPricingModel(data.getPricingModel());
 		if (data.getPerHour() != null)
 			cur.setPerHour(data.getPerHour());
+		if (data.getBikePerHour() != null)
+			cur.setBikePerHour(data.getBikePerHour());
+		if (data.getCarPerHour() != null)
+			cur.setCarPerHour(data.getCarPerHour());
+		if (data.getTruckPerHour() != null)
+			cur.setTruckPerHour(data.getTruckPerHour());
 		if (data.getGraceMinutes() != null)
 			cur.setGraceMinutes(data.getGraceMinutes());
 		if (data.getRoundUpToHour() != null)

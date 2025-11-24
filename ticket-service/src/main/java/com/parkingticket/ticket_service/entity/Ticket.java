@@ -2,34 +2,29 @@ package com.parkingticket.ticket_service.entity;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Document
 public class Ticket {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String id;
 
-	@Column(nullable = false, unique = true)
+	@Indexed
 	private String ticketNumber; // e.g., "T-001"
 
-	@Column(nullable = false)
 	private String plateNumber;
 
-	@Column(nullable = false)
 	private String status; // OPEN, CLOSED
 
-	@Column(nullable = false)
 	private LocalDateTime entryTime;
 
 	private LocalDateTime exitTime; // set on close

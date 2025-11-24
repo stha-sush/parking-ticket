@@ -30,7 +30,7 @@ public class VehicleController {
 	}
 
 	@GetMapping("/{id}")
-	public Vehicle one(@PathVariable Long id) {
+	public Vehicle one(@PathVariable String id) {
 		return service.findById(id);
 	}
 
@@ -40,12 +40,12 @@ public class VehicleController {
 	}
 
 	@PutMapping("/{id}")
-	public Vehicle update(@PathVariable Long id, @RequestBody Vehicle v) {
+	public Vehicle update(@PathVariable String id, @RequestBody Vehicle v) {
 		return service.update(id, v);
 	}
 
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable Long id) {
+	public void delete(@PathVariable String id) {
 		service.delete(id);
 	}
 

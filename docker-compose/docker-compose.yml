@@ -1,0 +1,54 @@
+services:
+  eureka-server:
+    build:
+      context: ../eureka-server
+      dockerfile: Dockerfile
+    image: parking-eureka-server
+    container_name: parking-eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - ms-network
+
+  vehicle-service:
+    build:
+      context: ../vehicle-service
+      dockerfile: Dockerfile
+    image: parking-vehicle-service
+    container_name: parking-vehicle-service
+    depends_on:
+      - eureka-server
+    ports:
+      - "8082:8082"
+    networks:
+      - ms-network
+
+  rate-service:
+    build:
+      context: ../rate-service
+      dockerfile: Dockerfile
+    image: parking-rate-service
+    container_name: parking-rate-service
+    depends_on:
+      - eureka-server
+    ports:
+      - "8083:8083"
+    networks:
+      - ms-network
+
+  ticket-service:
+    build:
+      context: ../ticket-service
+      dockerfile: Dockerfile
+    image: parking-ticket-service
+    container_name: parking-ticket-service
+    depends_on:
+      - eureka-server
+    ports:
+      - "8084:8084"
+    networks:
+      - ms-network
+
+networks:
+  ms-network:
+    driver: bridge
