@@ -11,17 +11,23 @@ services:
       - ms-network
 
   vehicle-service:
-    build:
-      context: ../vehicle-service
-      dockerfile: Dockerfile
-    image: parking-vehicle-service
-    container_name: parking-vehicle-service
-    depends_on:
-      - eureka-server
-    ports:
-      - "8082:8082"
-    networks:
-      - ms-network
+      build:
+        context: ../vehicle-service
+        dockerfile: Dockerfile
+      image: parking-vehicle-service
+      container_name: parking-vehicle-service
+      depends_on:
+        - eureka-server
+      ports:
+        - "8082:8082"
+      environment:
+        # use Eureka inside Docker network
+        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+        # use MongoDB container instead of localhost
+        - SPRING_DATA_MONGODB_URI=mongodb://admin:admin123@mongodb:27017
+        - SPRING_DATA_MONGODB_DATABASE=vehicle-service
+      networks:
+        - ms-network
 
   rate-service:
     build:
@@ -33,6 +39,13 @@ services:
       - eureka-server
     ports:
       - "8083:8083"
+    environment:
+      # Eureka inside Docker network
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      # Use MySQL container (mysqldb) instead of localhost
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/ratedb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
     networks:
       - ms-network
 
@@ -46,9 +59,16 @@ services:
       - eureka-server
     ports:
       - "8084:8084"
+    environment:
+      # Eureka inside Docker network
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      # Use MongoDB container for ticket DB
+      - SPRING_DATA_MONGODB_URI=mongodb://admin:admin123@mongodb:27017/ticketdb?authSource=admin
+      - SPRING_DATA_MONGODB_DATABASE=ticket-service
     networks:
       - ms-network
 
 networks:
   ms-network:
     driver: bridge
+    
