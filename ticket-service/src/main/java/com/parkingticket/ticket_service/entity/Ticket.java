@@ -3,6 +3,8 @@ package com.parkingticket.ticket_service.entity;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,6 +16,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
+@CompoundIndexes({
+	// create an index on plateNumber + status.
+	@CompoundIndex(name = "plate_status_idx", def = "{'plateNumber': 1, 'status': 1}") })
 public class Ticket {
 	@Id
 	private String id;

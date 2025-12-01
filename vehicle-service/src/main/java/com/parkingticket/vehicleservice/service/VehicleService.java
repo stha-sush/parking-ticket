@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.parkingticket.vehicleservice.config.MqttGateway;
+import com.exception.VehicleAlreadyExistsException;
 import com.parkingticket.vehicleservice.entity.Vehicle;
 import com.parkingticket.vehicleservice.repository.VehicleRepository;
 
@@ -18,7 +18,7 @@ public class VehicleService {
 
 	@Autowired
 	private final VehicleRepository repo;
-	private final MqttGateway mqttGateway;
+	// private final MqttGateway mqttGateway;
 
 	public List<Vehicle> findAll() {
 		return repo.findAll();
@@ -32,12 +32,13 @@ public class VehicleService {
 		if (v.getPlateNumber() == null || v.getPlateNumber().isBlank()) {
 			throw new RuntimeException("plateNumber is required");
 		}
-		if (repo.existsByPlateNumber(v.getPlateNumber())) {
-			throw new RuntimeException("Vehicle already exists for plate");
+		if (repo.findFirstByPlateNumber(v.getPlateNumber()).isPresent()) {
+			throw new VehicleAlreadyExistsException(v.getPlateNumber());
 		}
+
 		Vehicle saved = repo.save(v);
 		// Publish vehicle ID to MQTT
-		mqttGateway.senToMqtt(saved.getId() + "", "vehicle-topic");
+		// mqttGateway.senToMqtt(saved.getId() + "", "vehicle-topic");
 
 		return saved;
 	}

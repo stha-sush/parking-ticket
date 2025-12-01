@@ -1,0 +1,50 @@
+{
+  "register vehicle" : {
+    "transaction" : "register vehicle",
+    "sampleCount" : 1000,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 3475.637,
+    "medianResTime" : 3418.0,
+    "minResTime" : 468.0,
+    "maxResTime" : 6552.0,
+    "pct1ResTime" : 5407.7,
+    "pct2ResTime" : 5702.95,
+    "pct3ResTime" : 6312.98,
+    "throughput" : 130.51422605063954,
+    "receivedKBytesPerSec" : 35.30511778908901,
+    "sentKBytesPerSec" : 34.158020099190814
+  },
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 2000,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 2598.9620000000027,
+    "medianResTime" : 2354.5,
+    "minResTime" : 15.0,
+    "maxResTime" : 6552.0,
+    "pct1ResTime" : 4947.400000000001,
+    "pct2ResTime" : 5408.95,
+    "pct3ResTime" : 5982.92,
+    "throughput" : 258.8661661920787,
+    "receivedKBytesPerSec" : 79.11622484144448,
+    "sentKBytesPerSec" : 61.050956186901374
+  },
+  "create ticket" : {
+    "transaction" : "create ticket",
+    "sampleCount" : 1000,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 1722.2869999999991,
+    "medianResTime" : 1660.0,
+    "minResTime" : 15.0,
+    "maxResTime" : 5503.0,
+    "pct1ResTime" : 3026.7999999999997,
+    "pct2ResTime" : 3444.2999999999965,
+    "pct3ResTime" : 4585.9400000000005,
+    "throughput" : 142.55167498218105,
+    "receivedKBytesPerSec" : 48.573647986457594,
+    "sentKBytesPerSec" : 29.930283321454027
+  }
+}

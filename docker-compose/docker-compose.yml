@@ -18,6 +18,7 @@ services:
       container_name: parking-vehicle-service
       depends_on:
         - eureka-server
+        - mosquitto
       ports:
         - "8082:8082"
       environment:
@@ -26,6 +27,7 @@ services:
         # use MongoDB container instead of localhost
         - SPRING_DATA_MONGODB_URI=mongodb://admin:admin123@mongodb:27017
         - SPRING_DATA_MONGODB_DATABASE=vehicle-service
+        - MQTT_HOST=mosquitto
       networks:
         - ms-network
 
@@ -68,6 +70,14 @@ services:
     networks:
       - ms-network
 
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    ports:
+      - "1883:1883"
+    networks:
+      - ms-network
+      
 networks:
   ms-network:
     driver: bridge
