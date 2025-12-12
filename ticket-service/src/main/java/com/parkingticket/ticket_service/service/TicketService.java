@@ -49,11 +49,11 @@ public class TicketService {
 
 		// // check if there is already an OPEN ticket for this plate
 		// repo.findFirstByPlateNumberAndStatus(plate, "OPEN").ifPresent(t -> {
-		// 	throw new RuntimeException("Vehicle already has an OPEN ticket");
+		// throw new RuntimeException("Vehicle already has an OPEN ticket");
 		// });
 
 		// Improvement: use existsBy + index for faster check
-		if(repo.existsByPlateNumberAndStatus(plate,"OPEN")) {
+		if (repo.existsByPlateNumberAndStatus(plate, "OPEN")) {
 			throw new RuntimeException("Vehicle already has an OPEN ticket");
 		}
 

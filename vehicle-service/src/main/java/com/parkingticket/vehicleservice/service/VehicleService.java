@@ -2,7 +2,7 @@ package com.parkingticket.vehicleservice.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class VehicleService {
 
-	@Autowired
 	private final VehicleRepository repo;
 	// private final MqttGateway mqttGateway;
 
@@ -24,11 +23,11 @@ public class VehicleService {
 		return repo.findAll();
 	}
 
-	public Vehicle findById(String id) {
+	public Vehicle findById(@NonNull String id) {
 		return repo.findById(id).orElseThrow(() -> new RuntimeException("Vehicle not found"));
 	}
 
-	public Vehicle create(Vehicle v) {
+	public Vehicle create(@NonNull Vehicle v) {
 		if (v.getPlateNumber() == null || v.getPlateNumber().isBlank()) {
 			throw new RuntimeException("plateNumber is required");
 		}
@@ -37,14 +36,12 @@ public class VehicleService {
 		}
 
 		Vehicle saved = repo.save(v);
-		// Publish vehicle ID to MQTT
 		// mqttGateway.senToMqtt(saved.getId() + "", "vehicle-topic");
-
 		return saved;
 	}
 
 	@Transactional
-	public Vehicle update(String id, Vehicle data) {
+	public Vehicle update(@NonNull String id, @NonNull Vehicle data) {
 		Vehicle v = findById(id);
 		v.setVehicleType(data.getVehicleType());
 		v.setOwnerName(data.getOwnerName());
@@ -52,13 +49,12 @@ public class VehicleService {
 	}
 
 	@Transactional
-	public void delete(String id) {
-		repo.delete(findById(id));
+	public void delete(@NonNull String id) {
+		repo.deleteById(id);
 	}
 
-	public Vehicle findByPlate(String plate) {
+	public Vehicle findByPlate(@NonNull String plate) {
 		return repo.findFirstByPlateNumber(plate)
 				.orElseThrow(() -> new RuntimeException("Vehicle not found for plate"));
 	}
-
 }

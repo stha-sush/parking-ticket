@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.parkingticket.ticket_service.dto.EnterDTO;
 import com.parkingticket.ticket_service.dto.ExitDTO;
 import com.parkingticket.ticket_service.entity.Ticket;
-import com.parkingticket.ticket_service.service.TicketService;
+import com.parkingticket.ticket_service.service.TicketService; // <-- import this
 
 @RestController
 @RequestMapping("/tickets")
 public class TicketController {
+
 	@Autowired
-	private TicketService service;
+	private TicketService service; // <-- use TicketService, not TicketServiceApplication
 
 	@GetMapping("/open")
 	public List<Ticket> open() {
@@ -40,5 +41,4 @@ public class TicketController {
 	public Ticket exit(@RequestBody ExitDTO dto) {
 		return service.exit(dto);
 	}
-
 }
