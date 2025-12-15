@@ -11,25 +11,23 @@ services:
       - ms-network
 
   vehicle-service:
-      build:
-        context: ../vehicle-service
-        dockerfile: Dockerfile
-      image: parking-vehicle-service
-      container_name: parking-vehicle-service
-      depends_on:
-        - eureka-server
-        - mosquitto
-      ports:
-        - "8082:8082"
-      environment:
-        # use Eureka inside Docker network
-        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-        # use MongoDB container instead of localhost
-        - SPRING_DATA_MONGODB_URI=mongodb://admin:admin123@mongodb:27017
-        - SPRING_DATA_MONGODB_DATABASE=vehicle-service
-        - MQTT_HOST=mosquitto
-      networks:
-        - ms-network
+    build:
+      context: ../vehicle-service
+      dockerfile: Dockerfile
+    image: parking-vehicle-service
+    container_name: parking-vehicle-service
+    depends_on:
+      - eureka-server
+      - mosquitto
+    ports:
+      - "8082:8082"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_DATA_MONGODB_URI=mongodb://admin:admin123@mongodb:27017
+      - SPRING_DATA_MONGODB_DATABASE=vehicle-service
+      - MQTT_HOST=mosquitto
+    networks:
+      - ms-network
 
   rate-service:
     build:
@@ -42,9 +40,7 @@ services:
     ports:
       - "8083:8083"
     environment:
-      # Eureka inside Docker network
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      # Use MySQL container (mysqldb) instead of localhost
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/ratedb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
@@ -62,11 +58,43 @@ services:
     ports:
       - "8084:8084"
     environment:
-      # Eureka inside Docker network
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      # Use MongoDB container for ticket DB
       - SPRING_DATA_MONGODB_URI=mongodb://admin:admin123@mongodb:27017/ticketdb?authSource=admin
       - SPRING_DATA_MONGODB_DATABASE=ticket-service
+    networks:
+      - ms-network
+
+  security-service:
+    build:
+      context: ../security-service
+      dockerfile: Dockerfile
+    image: parking-security-service
+    container_name: parking-security-service
+    depends_on:
+      - eureka-server
+    ports:
+      - "8081:8081"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    networks:
+      - ms-network
+
+  api-gateway:
+    build:
+      context: ../api-gateway
+      dockerfile: Dockerfile
+    image: parking-api-gateway
+    container_name: parking-api-gateway
+    depends_on:
+      - eureka-server
+      - vehicle-service
+      - rate-service
+      - ticket-service
+      - security-service
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
     networks:
       - ms-network
 
@@ -77,8 +105,7 @@ services:
       - "1883:1883"
     networks:
       - ms-network
-      
+
 networks:
   ms-network:
     driver: bridge
-    

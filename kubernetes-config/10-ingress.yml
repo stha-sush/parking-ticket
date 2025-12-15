@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: parking-ingress
+  namespace: parking
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: parking.local
+      http:
+        paths:
+          - path: /vehicle-service(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: vehicle-service
+                port:
+                  number: 8082
+
+          - path: /ticket-service(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: ticket-service
+                port:
+                  number: 8084
+
+          - path: /rate-service(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: rate-service
+                port:
+                  number: 8083
+
+          - path: /security-service(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: security-service
+                port:
+                  number: 8081
+
+          - path: /api-gateway(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 8080
