@@ -15,5 +15,6 @@ public interface TicketRepository extends MongoRepository<Ticket, String> {
 	List<Ticket> findByStatus(String status);
 
 	// only returns true/false, does not fetch full Ticket document
+	// test 
 	boolean existsByPlateNumberAndStatus(String plateNumber, String status);
 }
